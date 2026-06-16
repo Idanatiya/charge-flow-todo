@@ -1,0 +1,12 @@
+/* TODOS */
+
+.todosContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.todoItem {
+  display: flex;
+  gap: 10px;
+}

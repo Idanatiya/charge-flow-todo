@@ -1,0 +1,41 @@
+.cardContainer {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+
+  gap: 10px 20px;
+}
+
+.card {
+  border: 1px solid #ccc;
+  background-color: white;
+  border-radius: 8px;
+  overflow: visible;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  justify-content: center;
+  align-items: center;
+
+  &.selected {
+    border-color: #007bff;
+    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.2);
+  }
+}
+
+.avatarContaier {
+  height: 100px;
+  width: 100px;
+  border-radius: 50%;
+  background-color: #f0f0f0;
+  border: 4px solid white;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  z-index: 1;
+  overflow: hidden;
+
+  & img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
