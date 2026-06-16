@@ -2,27 +2,14 @@ import { useCallback, useMemo } from "react";
 import { useSearchParams } from "react-router";
 import { pipe } from "fp-ts/lib/function";
 import * as O from "fp-ts/Option";
-import * as A from "fp-ts/Array";
 import type { User } from "../../types/user";
+import {
+  USER_ID_PARAM,
+  findUserById,
+  getSelectedUserIdOption,
+} from "./userSelection.utils";
 
-export const USER_ID_PARAM = "userId";
-
-const parseUserId = (value: string): O.Option<number> =>
-  pipe(
-    Number(value),
-    O.fromPredicate((value) => Number.isInteger(value)),
-  );
-
-const getSelectedUserIdOption = (params: URLSearchParams): O.Option<number> =>
-  pipe(O.fromNullable(params.get(USER_ID_PARAM)), O.chain(parseUserId));
-
-const findUserById =
-  (users: User[]) =>
-  (userId: number): O.Option<User> =>
-    pipe(
-      users,
-      A.findFirst((user) => user.id === userId),
-    );
+export { USER_ID_PARAM } from "./userSelection.utils";
 
 export function useUserSelection(users: User[]) {
   const [searchParams, setSearchParams] = useSearchParams();
