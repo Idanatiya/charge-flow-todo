@@ -4,13 +4,31 @@ import { UserCard } from "../components/UserList/UserList";
 import { useCallback } from "react";
 import { TodosPanel } from "../components/TodosPanel/TodosPanel";
 import { useSearchParams } from "react-router";
+import { pipe } from "fp-ts/lib/function";
+import * as A from "fp-ts/Array";
+import * as O from "fp-ts/Option";
+
+const USER_ID_PARAM = "userId";
+
+const parseUserId = (value: string): O.Option<number> =>
+  pipe(
+    Number(value),
+    O.fromPredicate((value) => Number.isInteger(value)),
+  );
+
+const getSelectedUserId = (params: URLSearchParams): number | null =>
+  pipe(
+    O.fromNullable(params.get(USER_ID_PARAM)),
+    O.chain(parseUserId),
+    O.match(
+      () => null,
+      (userId) => userId,
+    ),
+  );
 
 function useUserSelection() {
   const [searchParams, setSearchParams] = useSearchParams();
-
-  const selectedUserId = searchParams.get("userId")
-    ? Number(searchParams.get("userId"))
-    : null;
+  const selectedUserId = getSelectedUserId(searchParams);
 
   const selectUser = useCallback(
     (userId: number) => {
@@ -27,8 +45,6 @@ function useUserSelection() {
 export default function HomePage() {
   const { data: users, isPending, isError } = useUsers();
   const { selectedUserId, selectUser } = useUserSelection();
-
-  // onClick i need to fetch the related todos of the specific user
 
   if (isPending) {
     return <h1>Loading..</h1>;
