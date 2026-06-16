@@ -1,27 +1,28 @@
 import type { User } from "../../types/user";
-import styles from "../UserList/styles.module.css";
+import { UserCard } from "./UserCard";
+import styles from "./styles.module.css";
 
-type UserCardProps = {
-  user: User;
-  onShowTodos: () => void;
-  isSelected: boolean;
+type UserListProps = {
+  users: User[];
+  selectedUserId: number | null;
+  onSelectUser: (userId: number) => void;
 };
 
-export function UserCard({ user, onShowTodos, isSelected }: UserCardProps) {
+export function UserList({
+  users,
+  selectedUserId,
+  onSelectUser,
+}: UserListProps) {
   return (
-    <li className={`${styles.card} ${isSelected ? styles.selected : ""}`}>
-      <div className={styles.cardContent}>
-        <div className={styles.avatarContaier}>
-          <img src={`https://robohash.org/${user.id}.png`} alt={user.name} />
-        </div>
-        <div className={styles.userInfo}>
-          <div className={styles.infoLine}>Username: {user.username}</div>
-          <div className={styles.infoLine}>Name: {user.name}</div>
-        </div>
-      </div>
-      <button className={styles.showTodosButton} onClick={onShowTodos}>
-        Show TODOs
-      </button>
-    </li>
+    <ul className={styles.cardContainer}>
+      {users.map((user) => (
+        <UserCard
+          key={user.id}
+          user={user}
+          isSelected={user.id === selectedUserId}
+          onShowTodos={() => onSelectUser(user.id)}
+        />
+      ))}
+    </ul>
   );
 }

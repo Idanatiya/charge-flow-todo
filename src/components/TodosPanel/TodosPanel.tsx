@@ -24,17 +24,21 @@ export function TodosPanel({ selectedUserId, username }: TodosPanelProps) {
 
   return (
     <div className={styles.todosPanelContainer}>
-      <span>Todos Of "{username}"</span>
-      <Checkbox
-        label="Hide Completed"
-        onChange={onToggleHideCompleted}
-        checked={isHideCompleted}
-      />
-      <ul className={styles.todosContainer}>
-        {filteredTodos.map((todo) => (
-          <TodoItem key={todo.id} todo={todo} />
-        ))}
-      </ul>
+      <div className={styles.panelHeader}>
+        <span>Todos Of "{username}"</span>
+      </div>
+      <div className={styles.panelContent}>
+        <Checkbox
+          label="Hide Completed"
+          onChange={onToggleHideCompleted}
+          checked={isHideCompleted}
+        />
+        <ul className={styles.todosContainer}>
+          {filteredTodos.map((todo) => (
+            <TodoItem key={todo.id} todo={todo} />
+          ))}
+        </ul>
+      </div>
     </div>
   );
 }

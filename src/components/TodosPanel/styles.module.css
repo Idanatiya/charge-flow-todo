@@ -1,12 +1,24 @@
-/* TODOS */
-
 .todosPanelContainer {
   display: flex;
   flex-direction: column;
   gap: 10px;
   background-color: white;
   border: 1px solid var(--card-border-color);
-  padding: 18px;
+}
+
+.panelHeader {
+  border-bottom: 1px solid var(--card-border-color);
+  padding: 8px;
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: var(--primary-color);
+}
+
+.panelContent {
+  padding: 8px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 .todosContainer {
@@ -14,7 +26,7 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 16px;
   overflow-y: auto;
 }
 
@@ -22,7 +34,7 @@
   display: flex;
   gap: 10px;
   background-color: white;
-  padding: 4px 8px;
+  padding: 16px;
   border: 8px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--card-border-color);
 }

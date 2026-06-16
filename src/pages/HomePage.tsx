@@ -1,8 +1,7 @@
 import { useUsers } from "../components/UserList/useUsers";
-import styles from "../components/UserList/styles.module.css";
-import { UserCard } from "../components/UserList/UserCard";
 import { TodosPanel } from "../components/TodosPanel/TodosPanel";
 import useUserSelection from "../components/UserList/useUserSelection";
+import { UserList } from "../components/UserList/UserList";
 
 export default function HomePage() {
   const { data: users = [], isPending, isError } = useUsers();
@@ -26,16 +25,11 @@ export default function HomePage() {
         padding: "16px",
       }}
     >
-      <ul className={styles.cardContainer}>
-        {users.map((user) => (
-          <UserCard
-            isSelected={user.id === selectedUser?.id}
-            key={user.id}
-            user={user}
-            onShowTodos={() => selectUser(user.id)}
-          />
-        ))}
-      </ul>
+      <UserList
+        users={users}
+        selectedUserId={selectedUser?.id ?? null}
+        onSelectUser={selectUser}
+      />
       {selectedUser && (
         <TodosPanel
           username={selectedUser.username}
