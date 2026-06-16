@@ -72,8 +72,9 @@ export default function HomePage() {
       style={{
         display: "flex",
         flexDirection: "column",
-        gap: "20px",
+        gap: "16px",
         minHeight: "100%",
+        padding: "16px",
       }}
     >
       <ul className={styles.cardContainer}>
