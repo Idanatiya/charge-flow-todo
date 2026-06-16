@@ -2,6 +2,7 @@ import { useUsers } from "../components/UserList/useUsers";
 import { TodosPanel } from "../components/TodosPanel/TodosPanel";
 import useUserSelection from "../components/UserList/useUserSelection";
 import { UserList } from "../components/UserList/UserList";
+import { Placeholder } from "../components/ui/Placeholder/Placeholder";
 
 export default function HomePage() {
   const { data: users = [], isPending, isError } = useUsers();
@@ -21,7 +22,8 @@ export default function HomePage() {
         display: "flex",
         flexDirection: "column",
         gap: "16px",
-        minHeight: "100%",
+        flex: 1,
+        minHeight: 0,
         padding: "16px",
       }}
     >
@@ -30,13 +32,24 @@ export default function HomePage() {
         selectedUserId={selectedUser?.id ?? null}
         onSelectUser={selectUser}
       />
-      {selectedUser && (
-        <TodosPanel
-          username={selectedUser.username}
-          key={selectedUser.id}
-          selectedUserId={selectedUser.id}
-        />
-      )}
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          flex: 1,
+          minHeight: 0,
+        }}
+      >
+        {selectedUser ? (
+          <TodosPanel
+            username={selectedUser.username}
+            key={selectedUser.id}
+            selectedUserId={selectedUser.id}
+          />
+        ) : (
+          <Placeholder>Select a user to see their todos</Placeholder>
+        )}
+      </div>
     </div>
   );
 }

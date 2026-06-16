@@ -1,0 +1,14 @@
+.placeholder {
+  width: 100%;
+  min-height: 100%;
+  border: 3px dashed var(--card-border-color);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #f8fafc;
+  flex: 1;
+  font-size: 2rem;
+  color: var(--primary-color);
+}

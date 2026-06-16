@@ -4,6 +4,8 @@
   gap: 10px;
   background-color: white;
   border: 1px solid var(--card-border-color);
+  flex: 1;
+  min-height: 0;
 }
 
 .panelHeader {
@@ -12,6 +14,7 @@
   font-size: 1.3rem;
   font-weight: bold;
   color: var(--primary-color);
+  flex-shrink: 0;
 }
 
 .panelContent {
@@ -19,10 +22,13 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
+  flex: 1;
+  min-height: 0;
 }
 
 .todosContainer {
-  max-height: 400px;
+  flex: 1;
+  min-height: 0;
   width: 100%;
   display: flex;
   flex-direction: column;
