@@ -11,14 +11,18 @@ type UserCardProps = {
 export function UserCard({ user, onShowTodos, isSelected }: UserCardProps) {
   return (
     <li className={`${styles.card} ${isSelected ? styles.selected : ""}`}>
-      <div className={styles.avatarContaier} data-name={user.username}>
-        <img src={`https://robohash.org/${user.id}.png`} alt={user.name} />
+      <div className={styles.cardContent}>
+        <div className={styles.avatarContaier}>
+          <img src={`https://robohash.org/${user.id}.png`} alt={user.name} />
+        </div>
+        <div className={styles.userInfo}>
+          <div className={styles.infoLine}>Username: {user.username}</div>
+          <div className={styles.infoLine}>Name: {user.name}</div>
+        </div>
       </div>
-      <div className="">
-        <div>Username: {user.username}</div>
-        <div>Name: {user.name}</div>
-        <button onClick={onShowTodos}>Show TODOs</button>
-      </div>
+      <button className={styles.showTodosButton} onClick={onShowTodos}>
+        Show TODOs
+      </button>
     </li>
   );
 }

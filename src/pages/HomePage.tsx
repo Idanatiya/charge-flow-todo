@@ -5,8 +5,10 @@ import { useCallback } from "react";
 import { TodosPanel } from "../components/TodosPanel/TodosPanel";
 import { useSearchParams } from "react-router";
 import { pipe } from "fp-ts/lib/function";
-import * as A from "fp-ts/Array";
 import * as O from "fp-ts/Option";
+import * as A from "fp-ts/Array";
+import type { User } from "../api/users";
+import { useMemo } from "react";
 
 const USER_ID_PARAM = "userId";
 
@@ -16,35 +18,46 @@ const parseUserId = (value: string): O.Option<number> =>
     O.fromPredicate((value) => Number.isInteger(value)),
   );
 
-const getSelectedUserId = (params: URLSearchParams): number | null =>
-  pipe(
-    O.fromNullable(params.get(USER_ID_PARAM)),
-    O.chain(parseUserId),
-    O.match(
-      () => null,
-      (userId) => userId,
-    ),
-  );
+const getSelectedUserIdOption = (params: URLSearchParams): O.Option<number> =>
+  pipe(O.fromNullable(params.get(USER_ID_PARAM)), O.chain(parseUserId));
 
-function useUserSelection() {
+const findUserById =
+  (users: User[]) =>
+  (userId: number): O.Option<User> =>
+    pipe(
+      users,
+      A.findFirst((user) => user.id === userId),
+    );
+
+function useUserSelection(users: User[]) {
   const [searchParams, setSearchParams] = useSearchParams();
-  const selectedUserId = getSelectedUserId(searchParams);
+
+  const selectedUser = useMemo(
+    () =>
+      pipe(
+        getSelectedUserIdOption(searchParams),
+        O.chain(findUserById(users)),
+        O.toNullable,
+      ),
+    [searchParams, users],
+  );
 
   const selectUser = useCallback(
     (userId: number) => {
-      setSearchParams({ userId: String(userId) });
+      setSearchParams((prevParams) => {
+        const nextParams = new URLSearchParams(prevParams);
+        nextParams.set(USER_ID_PARAM, String(userId));
+        return nextParams;
+      });
     },
     [setSearchParams],
   );
 
-  return {
-    selectedUserId,
-    selectUser,
-  };
+  return [selectedUser, selectUser] as const;
 }
 export default function HomePage() {
-  const { data: users, isPending, isError } = useUsers();
-  const { selectedUserId, selectUser } = useUserSelection();
+  const { data: users = [], isPending, isError } = useUsers();
+  const [selectedUser, selectUser] = useUserSelection(users);
 
   if (isPending) {
     return <h1>Loading..</h1>;
@@ -55,20 +68,31 @@ export default function HomePage() {
   }
 
   return (
-    <>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: "20px",
+        minHeight: "100%",
+      }}
+    >
       <ul className={styles.cardContainer}>
         {users.map((user) => (
           <UserCard
-            isSelected={user.id === selectedUserId}
+            isSelected={user.id === selectedUser?.id}
             key={user.id}
             user={user}
             onShowTodos={() => selectUser(user.id)}
           />
         ))}
       </ul>
-      {selectedUserId !== null && (
-        <TodosPanel key={selectedUserId} selectedUserId={selectedUserId} />
+      {selectedUser && (
+        <TodosPanel
+          username={selectedUser.username}
+          key={selectedUser.id}
+          selectedUserId={selectedUser.id}
+        />
       )}
-    </>
+    </div>
   );
 }

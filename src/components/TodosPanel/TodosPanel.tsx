@@ -8,6 +8,7 @@ import * as O from "fp-ts/Option";
 
 type TodosPanelProps = {
   selectedUserId: number;
+  username: string;
 };
 
 const HIDE_COMPLETED_PARAM = "hideCompleted";
@@ -63,7 +64,7 @@ function useToggleCompleted(todos: Todo[]) {
   };
 }
 
-export function TodosPanel({ selectedUserId }: TodosPanelProps) {
+export function TodosPanel({ selectedUserId, username }: TodosPanelProps) {
   const { data: todos = [], isPending, isError } = useTodos(selectedUserId);
   const { visibleTodos, isHideCompleted, toggleHideCompleted } =
     useToggleCompleted(todos);
@@ -76,7 +77,8 @@ export function TodosPanel({ selectedUserId }: TodosPanelProps) {
     return <h1>Error</h1>;
   }
   return (
-    <>
+    <div className={styles.todosPanelContainer}>
+      <span>Todos Of "{username}"</span>
       <HideCompletedTodosFilter
         isChecked={isHideCompleted}
         onToggleFilter={toggleHideCompleted}
@@ -86,7 +88,7 @@ export function TodosPanel({ selectedUserId }: TodosPanelProps) {
           <Todo key={todo.id} todo={todo} />
         ))}
       </ul>
-    </>
+    </div>
   );
 }
 
@@ -100,15 +102,20 @@ function HideCompletedTodosFilter({
 }: HideCompletedTodosFilterProps) {
   const id = useId();
   return (
-    <>
+    <div
+      style={{
+        display: "flex",
+        gap: 8,
+      }}
+    >
       <input
-        name={id}
+        id={id}
         type="checkbox"
         onChange={onToggleFilter}
         checked={isChecked}
       />
       <label htmlFor={id}>Hide Completed</label>
-    </>
+    </div>
   );
 }
 
@@ -120,7 +127,7 @@ function Todo({ todo }: TodoProps) {
   const id = useId();
   return (
     <li className={styles.todoItem}>
-      <input id={id} type="checkbox" checked={todo.completed} readOnly />
+      <input id={id} type="checkbox" checked={todo.completed} disabled />
       <label htmlFor={id}>{todo.title}</label>
     </li>
   );

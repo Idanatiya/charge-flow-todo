@@ -5,6 +5,13 @@
   box-sizing: border-box;
 }
 
+html,
+body,
+#root {
+  height: 100%;
+  min-height: 100%;
+}
+
 ul {
   list-style: none;
   padding: 0;
@@ -26,7 +33,6 @@ body {
   /* 5. Improve text rendering */
   -webkit-font-smoothing: antialiased;
   background-color: #fafafa;
-  margin-top: 60px;
 }
 /* 6. Improve media defaults */
 img,
@@ -72,4 +78,10 @@ h6 {
 #root,
 #__next {
   isolation: isolate;
+}
+
+:root {
+  --card-border-color: #dbdfe5;
+  --primary-color: #007bff;
+  --card-border-selected: var(--primary-color);
 }

@@ -1,16 +1,23 @@
-import { Link, Outlet } from 'react-router'
+import { Link, Outlet } from "react-router";
+import styles from "./styles.module.css";
 
 export default function RootLayout() {
   return (
-    <>
-      <header>
-        <nav>
-          <Link to="/">Home</Link>
-        </nav>
-      </header>
+    <div className={styles.wrapper}>
+      <TheSidebar />
       <main>
         <Outlet />
       </main>
-    </>
-  )
+    </div>
+  );
+}
+
+function TheSidebar() {
+  return (
+    <nav className={styles.sidebarContainer}>
+      <div className="logoContainer">
+        <img />
+      </div>
+    </nav>
+  );
 }
