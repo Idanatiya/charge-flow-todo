@@ -75,20 +75,39 @@ export function TodosPanel({ selectedUserId }: TodosPanelProps) {
   if (isError) {
     return <h1>Error</h1>;
   }
-  console.log({ visibleTodos });
   return (
     <>
-      <label>Hide Completed</label>
-      <input
-        type="checkbox"
-        onChange={toggleHideCompleted}
-        checked={isHideCompleted}
+      <HideCompletedTodosFilter
+        isChecked={isHideCompleted}
+        onToggleFilter={toggleHideCompleted}
       />
       <ul className={styles.todosContainer}>
         {visibleTodos.map((todo) => (
           <Todo key={todo.id} todo={todo} />
         ))}
       </ul>
+    </>
+  );
+}
+
+type HideCompletedTodosFilterProps = {
+  onToggleFilter: () => void;
+  isChecked: boolean;
+};
+function HideCompletedTodosFilter({
+  onToggleFilter,
+  isChecked,
+}: HideCompletedTodosFilterProps) {
+  const id = useId();
+  return (
+    <>
+      <input
+        name={id}
+        type="checkbox"
+        onChange={onToggleFilter}
+        checked={isChecked}
+      />
+      <label htmlFor={id}>Hide Completed</label>
     </>
   );
 }
