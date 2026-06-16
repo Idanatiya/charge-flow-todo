@@ -1,4 +1,5 @@
 import type { User } from "../../types/user";
+import { List } from "../ui/List/List";
 import { UserCard } from "./UserCard";
 import styles from "./styles.module.css";
 
@@ -14,7 +15,7 @@ export function UserList({
   onSelectUser,
 }: UserListProps) {
   return (
-    <ul className={styles.cardContainer}>
+    <List className={styles.cardContainer}>
       {users.map((user) => (
         <UserCard
           key={user.id}
@@ -23,6 +24,6 @@ export function UserList({
           onShowTodos={() => onSelectUser(user.id)}
         />
       ))}
-    </ul>
+    </List>
   );
 }

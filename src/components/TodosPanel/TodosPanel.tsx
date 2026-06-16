@@ -1,8 +1,9 @@
 import { useTodos } from "../../api/todos";
 import styles from "./styles.module.css";
 import type { Todo, Todo as TodoItem } from "../../types/todo";
-import { Checkbox } from "../ui/Checkbox";
+import { Checkbox } from "../ui/Checkbox/Checkbox";
 import { useFilteredTodos } from "./useFilteredTodos";
+import { List } from "../ui/List/List";
 
 type TodosPanelProps = {
   selectedUserId: number;
@@ -33,11 +34,11 @@ export function TodosPanel({ selectedUserId, username }: TodosPanelProps) {
           onChange={onToggleHideCompleted}
           checked={isHideCompleted}
         />
-        <ul className={styles.todosContainer}>
+        <List className={styles.todosContainer}>
           {filteredTodos.map((todo) => (
             <TodoItem key={todo.id} todo={todo} />
           ))}
-        </ul>
+        </List>
       </div>
     </div>
   );
