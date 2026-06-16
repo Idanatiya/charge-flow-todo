@@ -1,9 +1,8 @@
 import { pipe } from "fp-ts/lib/function";
 import * as O from "fp-ts/Option";
 import * as A from "fp-ts/Array";
+import { routes } from "../../config/routes";
 import type { User } from "../../types/user";
-
-export const USER_ID_PARAM = "userId";
 
 export const parseUserId = (value: string): O.Option<number> =>
   pipe(
@@ -16,7 +15,10 @@ export const parseUserId = (value: string): O.Option<number> =>
 export const getSelectedUserIdOption = (
   params: URLSearchParams,
 ): O.Option<number> =>
-  pipe(O.fromNullable(params.get(USER_ID_PARAM)), O.chain(parseUserId));
+  pipe(
+    O.fromNullable(params.get(routes.searchParams.userId)),
+    O.chain(parseUserId),
+  );
 
 export const findUserById =
   (users: User[]) =>

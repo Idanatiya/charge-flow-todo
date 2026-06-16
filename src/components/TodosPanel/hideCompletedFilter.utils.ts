@@ -1,15 +1,15 @@
 import { pipe } from "fp-ts/lib/function";
 import * as O from "fp-ts/Option";
+import { routes } from "../../config/routes";
 
-export const HIDE_COMPLETED_PARAM = "hideCompleted";
-export const TRUE = "true";
+const HIDE_COMPLETED_ENABLED = "true";
 
 export const getIsHideCompleted = (params: URLSearchParams): boolean =>
   pipe(
-    O.fromNullable(params.get(HIDE_COMPLETED_PARAM)),
+    O.fromNullable(params.get(routes.searchParams.hideCompleted)),
     O.match(
       () => false,
-      (value) => value === TRUE,
+      (value) => value === HIDE_COMPLETED_ENABLED,
     ),
   );
 
@@ -20,9 +20,9 @@ export const toggleHideCompletedParam = (
 
   pipe(getIsHideCompleted(nextParams), (isHidden) => {
     if (isHidden) {
-      nextParams.delete(HIDE_COMPLETED_PARAM);
+      nextParams.delete(routes.searchParams.hideCompleted);
     } else {
-      nextParams.set(HIDE_COMPLETED_PARAM, TRUE);
+      nextParams.set(routes.searchParams.hideCompleted, HIDE_COMPLETED_ENABLED);
     }
   });
 

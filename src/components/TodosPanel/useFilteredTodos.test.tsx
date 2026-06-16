@@ -1,5 +1,6 @@
 import { act, renderHook } from "@testing-library/react";
 
+import { routes } from "../../config/routes";
 import { createMemoryRouterWrapper } from "../../test/test-utils";
 import type { Todo } from "../../types/todo";
 import { useFilteredTodos } from "./useFilteredTodos";
@@ -13,7 +14,7 @@ const todos = [
 describe("useFilteredTodos", () => {
   it("returns all todos when hide completed filter is off", () => {
     const { result } = renderHook(() => useFilteredTodos(todos), {
-      wrapper: createMemoryRouterWrapper("/"),
+      wrapper: createMemoryRouterWrapper(routes.home.path),
     });
 
     expect(result.current.filteredTodos).toEqual(todos);
@@ -22,7 +23,9 @@ describe("useFilteredTodos", () => {
 
   it("hides completed todos when hideCompleted param is true", () => {
     const { result } = renderHook(() => useFilteredTodos(todos), {
-      wrapper: createMemoryRouterWrapper("/?hideCompleted=true"),
+      wrapper: createMemoryRouterWrapper(
+        `${routes.home.path}?${routes.searchParams.hideCompleted}=true`,
+      ),
     });
 
     expect(result.current.filteredTodos).toEqual([todos[0], todos[2]]);
@@ -31,7 +34,7 @@ describe("useFilteredTodos", () => {
 
   it("updates filtered todos when toggling hide completed", () => {
     const { result } = renderHook(() => useFilteredTodos(todos), {
-      wrapper: createMemoryRouterWrapper("/"),
+      wrapper: createMemoryRouterWrapper(routes.home.path),
     });
 
     expect(result.current.filteredTodos).toEqual(todos);

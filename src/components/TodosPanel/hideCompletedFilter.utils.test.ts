@@ -1,8 +1,7 @@
+import { routes } from "../../config/routes";
 import {
   getIsHideCompleted,
-  HIDE_COMPLETED_PARAM,
   toggleHideCompletedParam,
-  TRUE,
 } from "./hideCompletedFilter.utils";
 
 describe("getIsHideCompleted", () => {
@@ -12,7 +11,9 @@ describe("getIsHideCompleted", () => {
 
   it("returns true when hideCompleted param is true", () => {
     expect(
-      getIsHideCompleted(new URLSearchParams(`${HIDE_COMPLETED_PARAM}=${TRUE}`)),
+      getIsHideCompleted(
+        new URLSearchParams(`${routes.searchParams.hideCompleted}=true`),
+      ),
     ).toBe(true);
   });
 
@@ -21,7 +22,7 @@ describe("getIsHideCompleted", () => {
     (value) => {
       expect(
         getIsHideCompleted(
-          new URLSearchParams(`${HIDE_COMPLETED_PARAM}=${value}`),
+          new URLSearchParams(`${routes.searchParams.hideCompleted}=${value}`),
         ),
       ).toBe(false);
     },
@@ -32,14 +33,14 @@ describe("toggleHideCompletedParam", () => {
   it("sets hideCompleted to true when filter is off", () => {
     const nextParams = toggleHideCompletedParam(new URLSearchParams());
 
-    expect(nextParams.get(HIDE_COMPLETED_PARAM)).toBe(TRUE);
+    expect(nextParams.get(routes.searchParams.hideCompleted)).toBe("true");
   });
 
   it("removes hideCompleted param when filter is on", () => {
     const nextParams = toggleHideCompletedParam(
-      new URLSearchParams(`${HIDE_COMPLETED_PARAM}=${TRUE}`),
+      new URLSearchParams(`${routes.searchParams.hideCompleted}=true`),
     );
 
-    expect(nextParams.has(HIDE_COMPLETED_PARAM)).toBe(false);
+    expect(nextParams.has(routes.searchParams.hideCompleted)).toBe(false);
   });
 });

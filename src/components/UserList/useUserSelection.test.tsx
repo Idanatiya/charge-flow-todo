@@ -1,5 +1,6 @@
 import { act, renderHook } from "@testing-library/react";
 
+import { routes } from "../../config/routes";
 import { createMemoryRouterWrapper } from "../../test/test-utils";
 import { useUserSelection } from "./useUserSelection";
 import type { User } from "../../types/user";
@@ -25,7 +26,7 @@ const users = [
 describe("useUserSelection", () => {
   it("returns null when userId param does not exist", () => {
     const { result } = renderHook(() => useUserSelection(users), {
-      wrapper: createMemoryRouterWrapper("/"),
+      wrapper: createMemoryRouterWrapper(routes.home.path),
     });
 
     const [selectedUser] = result.current;
@@ -35,7 +36,9 @@ describe("useUserSelection", () => {
 
   it("returns the selected user when userId param matches a user", () => {
     const { result } = renderHook(() => useUserSelection(users), {
-      wrapper: createMemoryRouterWrapper("/?userId=2"),
+      wrapper: createMemoryRouterWrapper(
+        `${routes.home.path}?${routes.searchParams.userId}=2`,
+      ),
     });
 
     const [selectedUser] = result.current;
@@ -45,7 +48,9 @@ describe("useUserSelection", () => {
 
   it("returns null when userId param does not match any user", () => {
     const { result } = renderHook(() => useUserSelection(users), {
-      wrapper: createMemoryRouterWrapper("/?userId=999"),
+      wrapper: createMemoryRouterWrapper(
+        `${routes.home.path}?${routes.searchParams.userId}=999`,
+      ),
     });
 
     const [selectedUser] = result.current;
@@ -55,7 +60,9 @@ describe("useUserSelection", () => {
 
   it("returns null when userId param is not a number", () => {
     const { result } = renderHook(() => useUserSelection(users), {
-      wrapper: createMemoryRouterWrapper("/?userId=abc"),
+      wrapper: createMemoryRouterWrapper(
+        `${routes.home.path}?${routes.searchParams.userId}=abc`,
+      ),
     });
 
     const [selectedUser] = result.current;
@@ -65,7 +72,7 @@ describe("useUserSelection", () => {
 
   it("selects a user", () => {
     const { result } = renderHook(() => useUserSelection(users), {
-      wrapper: createMemoryRouterWrapper("/"),
+      wrapper: createMemoryRouterWrapper(routes.home.path),
     });
 
     const [initialSelectedUser, selectUser] = result.current;
@@ -83,7 +90,9 @@ describe("useUserSelection", () => {
 
   it("replaces the selected user when selecting another user", () => {
     const { result } = renderHook(() => useUserSelection(users), {
-      wrapper: createMemoryRouterWrapper("/?userId=1"),
+      wrapper: createMemoryRouterWrapper(
+        `${routes.home.path}?${routes.searchParams.userId}=1`,
+      ),
     });
 
     const [initialSelectedUser, selectUser] = result.current;

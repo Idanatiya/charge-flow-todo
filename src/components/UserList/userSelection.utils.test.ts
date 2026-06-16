@@ -1,7 +1,5 @@
-import {
-  expectNone,
-  expectSome,
-} from "../../test/test-utils";
+import { expectNone, expectSome } from "../../test/test-utils";
+import { routes } from "../../config/routes";
 import type { User } from "../../types/user";
 import {
   findUserById,
@@ -37,13 +35,19 @@ describe("getSelectedUserIdOption", () => {
 
   it("returns some when userId param is valid", () => {
     expectSome(
-      getSelectedUserIdOption(new URLSearchParams("userId=2")),
+      getSelectedUserIdOption(
+        new URLSearchParams(`${routes.searchParams.userId}=2`),
+      ),
       2,
     );
   });
 
   it("returns none when userId param is invalid", () => {
-    expectNone(getSelectedUserIdOption(new URLSearchParams("userId=abc")));
+    expectNone(
+      getSelectedUserIdOption(
+        new URLSearchParams(`${routes.searchParams.userId}=abc`),
+      ),
+    );
   });
 });
 
