@@ -1,5 +1,5 @@
 import type { ComponentPropsWithoutRef, ReactNode } from "react";
-import styles from "./styles.module.css";
+import styles from "./Placeholder.module.css";
 
 type PlaceholderProps = ComponentPropsWithoutRef<"div"> & {
   children: ReactNode;

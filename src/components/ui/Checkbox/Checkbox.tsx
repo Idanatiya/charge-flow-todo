@@ -1,5 +1,5 @@
 import { useId, type ComponentPropsWithoutRef } from "react";
-import styles from "./styles.module.css";
+import styles from "./Checkbox.module.css";
 
 interface CheckboxProps extends ComponentPropsWithoutRef<"input"> {
   label: string;

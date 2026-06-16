@@ -1,7 +1,7 @@
 import type { User } from "../../types/user";
 import { List } from "../ui/List/List";
 import { UserCard } from "./UserCard";
-import styles from "./styles.module.css";
+import styles from "./UserList.module.css";
 
 type UserListProps = {
   users: User[];

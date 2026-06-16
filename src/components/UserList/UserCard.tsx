@@ -1,5 +1,5 @@
 import type { User } from "../../types/user";
-import styles from "../UserList/styles.module.css";
+import styles from "./UserList.module.css";
 
 type UserCardProps = {
   user: User;

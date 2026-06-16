@@ -1,9 +1,9 @@
 import { useTodos } from "../../api/todos";
-import styles from "./styles.module.css";
-import type { Todo, Todo as TodoItem } from "../../types/todo";
+import styles from "./TodosPanel.module.css";
 import { Checkbox } from "../ui/Checkbox/Checkbox";
-import { useFilteredTodos } from "./useFilteredTodos";
 import { List } from "../ui/List/List";
+import { Todo } from "../Todo/Todo";
+import { useFilteredTodos } from "./useFilteredTodos";
 
 type TodosPanelProps = {
   selectedUserId: number;
@@ -36,22 +36,10 @@ export function TodosPanel({ selectedUserId, username }: TodosPanelProps) {
         />
         <List className={styles.todosContainer}>
           {filteredTodos.map((todo) => (
-            <TodoItem key={todo.id} todo={todo} />
+            <Todo key={todo.id} todo={todo} />
           ))}
         </List>
       </div>
     </div>
-  );
-}
-
-type TodoItemProps = {
-  todo: Todo;
-};
-
-function TodoItem({ todo }: TodoItemProps) {
-  return (
-    <li className={styles.todoItem}>
-      <Checkbox label={todo.title} checked={todo.completed} disabled />
-    </li>
   );
 }

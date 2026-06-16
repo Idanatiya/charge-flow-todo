@@ -1,6 +1,6 @@
 import { Outlet } from "react-router";
 import logo from "../assets/logo.png";
-import styles from "./styles.module.css";
+import styles from "./RootLayout.module.css";
 
 export default function RootLayout() {
   return (
