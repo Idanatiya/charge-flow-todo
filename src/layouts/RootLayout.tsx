@@ -1,4 +1,4 @@
-import { Link, Outlet } from "react-router";
+import { Outlet } from "react-router";
 import styles from "./styles.module.css";
 
 export default function RootLayout() {

@@ -2,14 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import * as TE from "fp-ts/TaskEither";
 import { pipe } from "fp-ts/function";
 import { toQueryFn } from "../lib/query-client";
-import { useCallback, useState } from "react";
-
-export type Todo = {
-  userId: number;
-  id: number;
-  title: string;
-  completed: boolean;
-};
+import type { Todo } from "../types/todo";
 
 const buildUserTodosEndpoint = (id: number) =>
   `https://jsonplaceholder.typicode.com/users/${id}/todos`;

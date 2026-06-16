@@ -1,73 +1,18 @@
-import { useCallback, useMemo, useId } from "react";
-import { useTodos, type Todo } from "../../api/todos";
+import { useTodos } from "../../api/todos";
 import styles from "./styles.module.css";
-import { useSearchParams } from "react-router";
-import { pipe } from "fp-ts/lib/function";
-import * as A from "fp-ts/Array";
-import * as O from "fp-ts/Option";
+import type { Todo, Todo as TodoItem } from "../../types/todo";
+import { Checkbox } from "../ui/Checkbox";
+import { useFilteredTodos } from "./useFilteredTodos";
 
 type TodosPanelProps = {
   selectedUserId: number;
   username: string;
 };
 
-const HIDE_COMPLETED_PARAM = "hideCompleted";
-const TRUE = "true";
-
-const getIsHideCompleted = (params: URLSearchParams): boolean =>
-  pipe(
-    O.fromNullable(params.get(HIDE_COMPLETED_PARAM)),
-    O.match(
-      () => false,
-      (value) => value === TRUE,
-    ),
-  );
-
-const toggleHideCompletedParam = (params: URLSearchParams): URLSearchParams => {
-  const nextParams = new URLSearchParams(params);
-
-  pipe(getIsHideCompleted(nextParams), (isHidden) => {
-    if (isHidden) {
-      nextParams.delete(HIDE_COMPLETED_PARAM);
-    } else {
-      nextParams.set(HIDE_COMPLETED_PARAM, TRUE);
-    }
-  });
-
-  return nextParams;
-};
-
-function useToggleCompleted(todos: Todo[]) {
-  const [searchParams, setSearchParams] = useSearchParams();
-
-  const isHideCompleted = getIsHideCompleted(searchParams);
-
-  const toggleHideCompleted = useCallback(() => {
-    setSearchParams((prevParams) => toggleHideCompletedParam(prevParams));
-  }, [setSearchParams]);
-
-  const visibleTodos = useMemo(
-    () =>
-      isHideCompleted
-        ? pipe(
-            todos,
-            A.filter((todo) => !todo.completed),
-          )
-        : todos,
-    [isHideCompleted, todos],
-  );
-
-  return {
-    visibleTodos,
-    isHideCompleted,
-    toggleHideCompleted,
-  };
-}
-
 export function TodosPanel({ selectedUserId, username }: TodosPanelProps) {
   const { data: todos = [], isPending, isError } = useTodos(selectedUserId);
-  const { visibleTodos, isHideCompleted, toggleHideCompleted } =
-    useToggleCompleted(todos);
+  const { filteredTodos, isHideCompleted, onToggleHideCompleted } =
+    useFilteredTodos(todos);
 
   if (isPending) {
     return <h1>Loading..</h1>;
@@ -76,59 +21,32 @@ export function TodosPanel({ selectedUserId, username }: TodosPanelProps) {
   if (isError) {
     return <h1>Error</h1>;
   }
+
   return (
     <div className={styles.todosPanelContainer}>
       <span>Todos Of "{username}"</span>
-      <HideCompletedTodosFilter
-        isChecked={isHideCompleted}
-        onToggleFilter={toggleHideCompleted}
+      <Checkbox
+        label="Hide Completed"
+        onChange={onToggleHideCompleted}
+        checked={isHideCompleted}
       />
       <ul className={styles.todosContainer}>
-        {visibleTodos.map((todo) => (
-          <Todo key={todo.id} todo={todo} />
+        {filteredTodos.map((todo) => (
+          <TodoItem key={todo.id} todo={todo} />
         ))}
       </ul>
     </div>
   );
 }
 
-type HideCompletedTodosFilterProps = {
-  onToggleFilter: () => void;
-  isChecked: boolean;
-};
-function HideCompletedTodosFilter({
-  onToggleFilter,
-  isChecked,
-}: HideCompletedTodosFilterProps) {
-  const id = useId();
-  return (
-    <div
-      style={{
-        display: "flex",
-        gap: 8,
-      }}
-    >
-      <input
-        id={id}
-        type="checkbox"
-        onChange={onToggleFilter}
-        checked={isChecked}
-      />
-      <label htmlFor={id}>Hide Completed</label>
-    </div>
-  );
-}
-
-type TodoProps = {
+type TodoItemProps = {
   todo: Todo;
 };
 
-function Todo({ todo }: TodoProps) {
-  const id = useId();
+function TodoItem({ todo }: TodoItemProps) {
   return (
     <li className={styles.todoItem}>
-      <input id={id} type="checkbox" checked={todo.completed} disabled />
-      <label htmlFor={id}>{todo.title}</label>
+      <Checkbox label={todo.title} checked={todo.completed} disabled />
     </li>
   );
 }
