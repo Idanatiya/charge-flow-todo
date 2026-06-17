@@ -3,8 +3,7 @@ import { useSearchParams } from "react-router";
 import { pipe } from "fp-ts/function";
 import * as O from "fp-ts/Option";
 import type { User } from "../../types/user";
-import { routes } from "../../config/routes";
-import { findUserById, getSelectedUserIdOption } from "./userSelection.utils";
+import { findUserById, getSelectedUserIdOption, setUserIdParam } from "./userSelection.utils";
 
 export function useUserSelection(users: User[]) {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -20,11 +19,7 @@ export function useUserSelection(users: User[]) {
 
   const selectUser = useCallback(
     (userId: number) => {
-      setSearchParams((prevParams) => {
-        const nextParams = new URLSearchParams(prevParams);
-        nextParams.set(routes.searchParams.userId, String(userId));
-        return nextParams;
-      });
+      setSearchParams((prevParams) => setUserIdParam(prevParams, userId));
     },
     [setSearchParams],
   );

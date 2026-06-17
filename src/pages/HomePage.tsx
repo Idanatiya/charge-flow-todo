@@ -53,7 +53,6 @@ export default function HomePage() {
                     ),
                     (user) => (
                       <TodosPanel
-                        key={user.id}
                         selectedUserId={user.id}
                         username={user.username}
                       />

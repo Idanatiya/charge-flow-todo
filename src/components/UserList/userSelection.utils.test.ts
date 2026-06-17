@@ -5,6 +5,7 @@ import {
   findUserById,
   getSelectedUserIdOption,
   parseUserId,
+  setUserIdParam,
 } from "./userSelection.utils";
 
 const users = [
@@ -62,5 +63,23 @@ describe("findUserById", () => {
 
   it("returns none when users array is empty", () => {
     expectNone(findUserById([])(1));
+  });
+});
+
+describe("setUserIdParam", () => {
+  it("sets the userId param", () => {
+    const params = setUserIdParam(new URLSearchParams(), 3);
+
+    expect(params.get(routes.searchParams.userId)).toBe("3");
+  });
+
+  it("clears hideCompleted when selecting a user", () => {
+    const params = setUserIdParam(
+      new URLSearchParams(`${routes.searchParams.hideCompleted}=true`),
+      2,
+    );
+
+    expect(params.get(routes.searchParams.userId)).toBe("2");
+    expect(params.has(routes.searchParams.hideCompleted)).toBe(false);
   });
 });

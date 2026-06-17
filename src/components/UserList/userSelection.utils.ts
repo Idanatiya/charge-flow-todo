@@ -27,3 +27,13 @@ export const findUserById =
       users,
       A.findFirst((user) => user.id === userId),
     );
+
+export const setUserIdParam = (
+  params: URLSearchParams,
+  userId: number,
+): URLSearchParams => {
+  const nextParams = new URLSearchParams(params);
+  nextParams.set(routes.searchParams.userId, String(userId));
+  nextParams.delete(routes.searchParams.hideCompleted);
+  return nextParams;
+};
