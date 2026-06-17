@@ -14,7 +14,6 @@ export function useUserSelection(users: User[]) {
       pipe(
         getSelectedUserIdOption(searchParams),
         O.chain(findUserById(users)),
-        O.toNullable,
       ),
     [searchParams, users],
   );

@@ -1,9 +1,13 @@
 import { act, renderHook } from "@testing-library/react";
 
 import { routes } from "../../config/routes";
-import { createMemoryRouterWrapper } from "../../test/test-utils";
-import { useUserSelection } from "./useUserSelection";
+import {
+  createMemoryRouterWrapper,
+  expectNone,
+  expectSome,
+} from "../../test/test-utils";
 import type { User } from "../../types/user";
+import { useUserSelection } from "./useUserSelection";
 
 const users = [
   {
@@ -24,14 +28,14 @@ const users = [
 ] as User[];
 
 describe("useUserSelection", () => {
-  it("returns null when userId param does not exist", () => {
+  it("returns none when userId param does not exist", () => {
     const { result } = renderHook(() => useUserSelection(users), {
       wrapper: createMemoryRouterWrapper(routes.home.path),
     });
 
     const [selectedUser] = result.current;
 
-    expect(selectedUser).toBeNull();
+    expectNone(selectedUser);
   });
 
   it("returns the selected user when userId param matches a user", () => {
@@ -43,10 +47,10 @@ describe("useUserSelection", () => {
 
     const [selectedUser] = result.current;
 
-    expect(selectedUser).toEqual(users[1]);
+    expectSome(selectedUser, users[1]);
   });
 
-  it("returns null when userId param does not match any user", () => {
+  it("returns none when userId param does not match any user", () => {
     const { result } = renderHook(() => useUserSelection(users), {
       wrapper: createMemoryRouterWrapper(
         `${routes.home.path}?${routes.searchParams.userId}=999`,
@@ -55,10 +59,10 @@ describe("useUserSelection", () => {
 
     const [selectedUser] = result.current;
 
-    expect(selectedUser).toBeNull();
+    expectNone(selectedUser);
   });
 
-  it("returns null when userId param is not a number", () => {
+  it("returns none when userId param is not a number", () => {
     const { result } = renderHook(() => useUserSelection(users), {
       wrapper: createMemoryRouterWrapper(
         `${routes.home.path}?${routes.searchParams.userId}=abc`,
@@ -67,7 +71,7 @@ describe("useUserSelection", () => {
 
     const [selectedUser] = result.current;
 
-    expect(selectedUser).toBeNull();
+    expectNone(selectedUser);
   });
 
   it("selects a user", () => {
@@ -77,7 +81,7 @@ describe("useUserSelection", () => {
 
     const [initialSelectedUser, selectUser] = result.current;
 
-    expect(initialSelectedUser).toBeNull();
+    expectNone(initialSelectedUser);
 
     act(() => {
       selectUser(3);
@@ -85,7 +89,7 @@ describe("useUserSelection", () => {
 
     const [selectedUser] = result.current;
 
-    expect(selectedUser).toEqual(users[2]);
+    expectSome(selectedUser, users[2]);
   });
 
   it("replaces the selected user when selecting another user", () => {
@@ -97,7 +101,7 @@ describe("useUserSelection", () => {
 
     const [initialSelectedUser, selectUser] = result.current;
 
-    expect(initialSelectedUser).toEqual(users[0]);
+    expectSome(initialSelectedUser, users[0]);
 
     act(() => {
       selectUser(2);
@@ -105,6 +109,6 @@ describe("useUserSelection", () => {
 
     const [selectedUser] = result.current;
 
-    expect(selectedUser).toEqual(users[1]);
+    expectSome(selectedUser, users[1]);
   });
 });
