@@ -79,4 +79,5 @@ h6 {
   --background-color: #fafafa;
   --primary-color: #007bff;
   --card-border-selected: var(--primary-color);
+  --text-color: #555;
 }

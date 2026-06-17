@@ -9,12 +9,22 @@
 }
 
 .panelHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
   border-bottom: 1px solid var(--card-border-color);
   padding: 8px;
   font-size: 1.3rem;
   font-weight: bold;
   color: var(--primary-color);
   flex-shrink: 0;
+}
+
+.completedCount {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-color);
 }
 
 .panelContent {

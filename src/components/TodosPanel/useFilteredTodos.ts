@@ -3,9 +3,8 @@ import { pipe } from "fp-ts/function";
 import * as A from "fp-ts/Array";
 
 import type { Todo } from "../../types/todo";
+import { isIncompleteTodo } from "./todo.utils";
 import { useHideCompletedFilter } from "./useHideCompletedFilter";
-
-const isIncompleteTodo = (todo: Todo): boolean => !todo.completed;
 
 export function useFilteredTodos(todos: Todo[]) {
   const [isHideCompleted, onToggleHideCompleted] = useHideCompletedFilter();

@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import * as TE from "fp-ts/TaskEither";
 import { pipe } from "fp-ts/function";
+import { queryKeys } from "../lib/query-keys";
 import { toQueryFn } from "../lib/query-client";
 import type { Todo } from "../types/todo";
 
@@ -34,7 +35,7 @@ export const fetchTodosByUserId = (
 
 export function useTodos(userId: number) {
   return useQuery({
-    queryKey: ["todos", userId],
+    queryKey: queryKeys.todos(userId),
     queryFn: ({ signal }) => {
       return toQueryFn(fetchTodosByUserId(userId, signal));
     },

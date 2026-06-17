@@ -1,15 +1,16 @@
-import { useUsers } from "../components/UserList/useUsers";
 import { TodosPanel } from "../components/TodosPanel/TodosPanel";
-import useUserSelection from "../components/UserList/useUserSelection";
 import { UserList } from "../components/UserList/UserList";
+import { useUserSelection } from "../components/UserList/useUserSelection";
+import { useUsers } from "../api/users";
 import { Placeholder } from "../components/ui/Placeholder/Placeholder";
+import styles from "./HomePage.module.css";
 
 export default function HomePage() {
   const { data: users = [], isPending, isError } = useUsers();
   const [selectedUser, selectUser] = useUserSelection(users);
 
   if (isPending) {
-    return <h1>Loading..</h1>;
+    return <h1>Loading...</h1>;
   }
 
   if (isError) {
@@ -17,29 +18,13 @@ export default function HomePage() {
   }
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        gap: "16px",
-        flex: 1,
-        minHeight: 0,
-        padding: "16px",
-      }}
-    >
+    <div className={styles.page}>
       <UserList
         users={users}
         selectedUserId={selectedUser?.id ?? null}
         onSelectUser={selectUser}
       />
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          flex: 1,
-          minHeight: 0,
-        }}
-      >
+      <div className={styles.todosSection}>
         {selectedUser ? (
           <TodosPanel
             username={selectedUser.username}

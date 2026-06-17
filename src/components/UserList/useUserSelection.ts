@@ -1,6 +1,6 @@
 import { useCallback, useMemo } from "react";
 import { useSearchParams } from "react-router";
-import { pipe } from "fp-ts/lib/function";
+import { pipe } from "fp-ts/function";
 import * as O from "fp-ts/Option";
 import type { User } from "../../types/user";
 import { routes } from "../../config/routes";
@@ -32,5 +32,3 @@ export function useUserSelection(users: User[]) {
 
   return [selectedUser, selectUser] as const;
 }
-
-export default useUserSelection;
