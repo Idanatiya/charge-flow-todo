@@ -26,13 +26,11 @@ ul {
 
 body {
   font-family: "Montserrat", system-ui, -apple-system, sans-serif;
-  /* 4. Increase line-height */
   line-height: 1.5;
-  /* 5. Improve text rendering */
   -webkit-font-smoothing: antialiased;
   background-color: var(--background-color);
 }
-/* 6. Improve media defaults */
+
 img,
 picture,
 video,
@@ -41,7 +39,7 @@ svg {
   display: block;
   max-width: 100%;
 }
-/* 7. Inherit fonts for form controls */
+
 input,
 button,
 textarea,
@@ -69,8 +67,7 @@ h6 {
   text-wrap: balance;
 }
 
-#root,
-#__next {
+#root {
   isolation: isolate;
 }
 

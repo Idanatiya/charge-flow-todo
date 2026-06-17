@@ -11,7 +11,6 @@ export const queryClient = new QueryClient({
   },
 });
 
-// Explicitly ensure 'Promise<A>' is the return type
 export async function toQueryFn<A>(
   taskEither: TE.TaskEither<Error, A>,
 ): Promise<A> {
