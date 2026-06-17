@@ -10,7 +10,6 @@
     "preview": "vite preview",
     "gen:css-types": "typed-css-modules \"src/**/*.module.css\"",
     "gen:css-types:watch": "typed-css-modules \"src/**/*.module.css\" --watch",
-    "prebuild": "npm run gen:css-types",
     "test": "vitest"
   },
   "dependencies": {
